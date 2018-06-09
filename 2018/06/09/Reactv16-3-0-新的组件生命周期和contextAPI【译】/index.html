@@ -119,20 +119,24 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Kosong">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="本文是翻译自 Brian Vaughn 于 2018年3月29日发布在React 博客上的一篇介绍 React 16.3 新特性和接口的文章，本文采用直译的方式，未做内容上的修改，有兴趣的看客可以点击原文链接查看原文，React v16.3.0: New lifecycles and context API。  翻译如有不当，欢迎指正，以下是原文翻译内容：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Reactv16.3.0:新的组件生命周期和contextAPI【译】">
+<meta property="og:url" content="http://yoursite.com/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/index.html">
 <meta property="og:site_name" content="Kosong">
+<meta property="og:description" content="本文是翻译自 Brian Vaughn 于 2018年3月29日发布在React 博客上的一篇介绍 React 16.3 新特性和接口的文章，本文采用直译的方式，未做内容上的修改，有兴趣的看客可以点击原文链接查看原文，React v16.3.0: New lifecycles and context API。  翻译如有不当，欢迎指正，以下是原文翻译内容：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-09T09:53:19.877Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kosong">
+<meta name="twitter:title" content="Reactv16.3.0:新的组件生命周期和contextAPI【译】">
+<meta name="twitter:description" content="本文是翻译自 Brian Vaughn 于 2018年3月29日发布在React 博客上的一篇介绍 React 16.3 新特性和接口的文章，本文采用直译的方式，未做内容上的修改，有兴趣的看客可以点击原文链接查看原文，React v16.3.0: New lifecycles and context API。  翻译如有不当，欢迎指正，以下是原文翻译内容：">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/"/>
 
 
 
@@ -142,7 +146,7 @@
   };
 </script>
 
-  <title>Kosong</title>
+  <title>Reactv16.3.0:新的组件生命周期和contextAPI【译】 | Kosong</title>
   
 
 
@@ -189,8 +193,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -318,9 +321,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -328,6 +331,8 @@
   
   
 
+  
+    <div class="reading-progress-bar"></div>
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -352,9 +357,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/" itemprop="url">Reactv16.3.0:新的组件生命周期和contextAPI【译】</a></h2>
+          <h2 class="post-title" itemprop="name headline">Reactv16.3.0:新的组件生命周期和contextAPI【译】</h2>
         
 
         <div class="post-meta">
@@ -430,200 +433,151 @@
       
 
       
-        
-          <blockquote>
+        <blockquote>
 <p>  本文是翻译自 <a href="https://github.com/bvaughn" target="_blank" rel="noopener">Brian Vaughn</a> 于 2018年3月29日发布在React 博客上的一篇介绍 React 16.3 新特性和接口的文章，本文采用直译的方式，未做内容上的修改，有兴趣的看客可以点击原文链接查看原文，<a href="https://reactjs.org/blog/2018/03/29/react-v-16-3.html" target="_blank" rel="noopener">React v16.3.0: New lifecycles and context API</a>。<br>  翻译如有不当，欢迎指正，以下是原文翻译内容：</p>
 </blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+<a id="more"></a>
+<p>  前端时间，我写过一篇博客，关于即将到来的<a href="https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html" target="_blank" rel="noopener">生命周方法的改变</a>，还包括了逐渐向新版本迁移的策略方法。在 React 16.3.0 中，我们将添加一些新的生命周期方法来协助迁移。我们也会介绍新的长期以来大家广泛要求新增的API：官方的 context API，ref 推进 API，和工程化的 ref API。</p>
+<p>  <strong>阅读发布说明了解更多。</strong></p>
+<h3 id="官方的-Context-API"><a href="#官方的-Context-API" class="headerlink" title="官方的 Context API"></a>官方的 Context API</h3><p>  长期以来，React 已经提供过一个实验性的 context API。它是个非常强大的工具，他的用法却很让人沮丧，因为这个 API 与生俱来的一些问题，同时，我们也一直打算用一个更好的 API 来替代这个实验性的。</p>
+<p>  16.3 版本中将引入一个新的 context API，他将更加的高效，同时支持静态类型检查和深层次更新。</p>
+<blockquote>
+<p><strong>注意</strong><br>原来的 context API 在 React 16.x 的版本种仍然可以使用，所以你有充足的时间来迁移。</p>
+</blockquote>
+<p>  下面这个例子，你可以看到，如何使用新的 context API 来插入 “theme”：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ThemeContext = React.createContext(<span class="string">'light'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThemeProvider</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;theme: <span class="string">'light'</span>&#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;ThemeContext.Provider value=&#123;<span class="keyword">this</span>.state.theme&#125;&gt;</span><br><span class="line">        &#123;<span class="keyword">this</span>.props.children&#125;</span><br><span class="line">      &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThemedButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;ThemeContext.Consumer&gt;</span><br><span class="line">        &#123;theme =&gt; &lt;Button theme=&#123;theme&#125; /&gt;&#125;</span><br><span class="line">      &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://doc.react-china.org/docs/context.html" target="_blank" rel="noopener">点击这个链接，查看更多关于新的 context API 的文档。</a></p>
+<h3 id="createRef-App"><a href="#createRef-App" class="headerlink" title="createRef App"></a>createRef App</h3><p>  以前，React 提供了两种方式管理 refs：传统字符串 ref API 和 callback API。尽管字符串 ref API 是更便捷的方式，他也有一些<a href="https://github.com/facebook/react/issues/1373" target="_blank" rel="noopener">缺点</a>，因此我们官方也推荐使用 callback 的方式替代字符串方式。</p>
+<p>  16.3 版本增加了一种新的方式管理 refs，它提供了一种便利的字符串 ref，但是没有那些缺陷。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.inputRef = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> &lt;input type=<span class="string">"text"</span> ref=&#123;<span class="keyword">this</span>.inputRef&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  componentDidMount() &#123;</span><br><span class="line">    <span class="keyword">this</span>.inputRef.current.focus();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意</strong><br>callback refs 的形式仍然会被支持，作为新的 <code>createRef</code> API 的补充。<br>你不必替换你组件里的 callback refs。他们更加的灵活，所以他们仍然会被保留作为高级特性。</p>
+</blockquote>
+<p>  <a href="https://doc.react-china.org/docs/refs-and-the-dom.html" target="_blank" rel="noopener">点击这个链接，查看更多关于新的 createRef API 的文档。</a></p>
+<h3 id="forwardRef-API"><a href="#forwardRef-API" class="headerlink" title="forwardRef API"></a>forwardRef API</h3><p>  高等组件（或者HOCs）是一种非常常见的方式在组件之间重复利用代码。继续上面的主题 context 的例子，我们可以创建一个 HOC，将现有的主题作为一个 props 插入其中。</p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">withTheme</span>(<span class="params">Component</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">ThemedComponent</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;ThemeContext.Consumer&gt;</span><br><span class="line">        &#123;theme =&gt; &lt;Component &#123;...props&#125; theme=&#123;theme&#125; /&gt;&#125;</span><br><span class="line">      &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  我们可以利用上面的 HOC 来操控组件主题 context，而不用直接使用 ThemeContext，举例来说：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FancyButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  buttonRef = React.createRef();</span><br><span class="line"></span><br><span class="line">  focus() &#123;</span><br><span class="line">    <span class="keyword">this</span>.buttonRef.current.focus();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;label, theme, ...rest&#125; = <span class="keyword">this</span>.props;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;button</span><br><span class="line">        &#123;...rest&#125;</span><br><span class="line">        className=&#123;`$&#123;theme&#125;-button`&#125;</span><br><span class="line">        ref=&#123;<span class="keyword">this</span>.buttonRef&#125;&gt;</span><br><span class="line"></span><br><span class="line">        &#123;label&#125;</span><br><span class="line">      &lt;/button&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> FancyThemedButton = withTheme(FancyButton);</span><br><span class="line"></span><br><span class="line"><span class="comment">// We can render FancyThemedButton as if it were a FancyButton</span></span><br><span class="line"><span class="comment">// It will automatically receive the current "theme",</span></span><br><span class="line"><span class="comment">// And the HOC will pass through our other props.</span></span><br><span class="line">&lt;FancyThemedButton</span><br><span class="line">  label=<span class="string">"Click me!"</span></span><br><span class="line">  onClick=&#123;handleClick&#125;</span><br><span class="line">/&gt;;</span><br></pre></td></tr></table></figure>
+<p>  HOC 可以<a href="https://doc.react-china.org/docs/higher-order-components.html#convention-pass-unrelated-props-through-to-the-wrapped-component" target="_blank" rel="noopener">将 props 传递</a>给他们包裹的组件。不幸的是，<a href="https://doc.react-china.org/docs/higher-order-components.html#refs-arent-passed-through" target="_blank" rel="noopener">refs 并没有被传递</a>。这意味着如果使用 <code>FancyThemedButton</code>，我们不能在 <code>FancyButton</code> 上绑定 ref——所以没办法调用 <code>focus()</code>。</p>
+<p>  新的 <code>forwardRef</code> API 解决了这个问题，提供一种方式来监听 <code>ref</code>，并把它作为一个 prop 传递：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">withTheme</span><span class="params">(Component)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Note the second param "ref" provided by React.forwardRef.</span></span><br><span class="line">  <span class="comment">// We can attach this to Component directly.</span></span><br><span class="line">  <span class="function">function <span class="title">ThemedComponent</span><span class="params">(props, ref)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;ThemeContext.Consumer&gt;</span><br><span class="line">        &#123;theme =&gt; (</span><br><span class="line">          &lt;Component &#123;...props&#125; ref=&#123;ref&#125; theme=&#123;theme&#125; /&gt;</span><br><span class="line">        )&#125;</span><br><span class="line">      &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// These next lines are not necessary,</span></span><br><span class="line">  <span class="comment">// But they do give the component a better display name in DevTools,</span></span><br><span class="line">  <span class="comment">// e.g. "ForwardRef(withTheme(MyComponent))"</span></span><br><span class="line">  <span class="keyword">const</span> name = Component.displayName || Component.name;</span><br><span class="line">  ThemedComponent.displayName = `withTheme($&#123;name&#125;)`;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Tell React to pass the "ref" to ThemedComponent.</span></span><br><span class="line">  <span class="keyword">return</span> React.forwardRef(ThemedComponent);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fancyButtonRef = React.createRef();</span><br><span class="line"></span><br><span class="line"><span class="comment">// fancyButtonRef will now point to FancyButton</span></span><br><span class="line">&lt;FancyThemedButton</span><br><span class="line">  label=<span class="string">"Click me!"</span></span><br><span class="line">  onClick=&#123;handleClick&#125;</span><br><span class="line">  ref=&#123;fancyButtonRef&#125;</span><br><span class="line">/&gt;;</span><br></pre></td></tr></table></figure>
+<h3 id="组件生命周期更改"><a href="#组件生命周期更改" class="headerlink" title="组件生命周期更改"></a>组件生命周期更改</h3><p>  React 的类组件 API 已经好几年没有大的改动了。然而，随着我们对更多高级特性的支持（比如，<a href="https://doc.react-china.org/docs/react-component.html#componentdidcatch" target="_blank" rel="noopener">错误边界</a>和即将使用的<a href="https://doc.react-china.org/blog/2018/03/01/sneak-peek-beyond-react-16.html" target="_blank" rel="noopener">异步渲染模式（async rendering mode）</a>，我们不断扩展这个框架，这其中有些内容是以前没有设计好的。</p>
+<p>  比如，使用目前的 API，太容易因为一些不重要的逻辑而阻塞初始化渲染。某种意义上，这是因为有太多的方式去完成一些特定的任务，到底哪种方式是最优方式反而不太清晰。我们注意到错误处理的操作中断行为经常会被忽略，可能会造成内存泄漏的问题（会影响接下来的异步渲染模式）。现阶段的类组件API也使一些其他的工作复杂化了，比如我们在<a href="https://twitter.com/trueadm/status/944908776896978946" target="_blank" rel="noopener">React编译器原型</a>上的工作。</p>
+<p>  某些组件生命周期函数加剧了这些问题（<code>componentWillMount</code>, <code>componentWillReceiveProps</code>，和<code>componentWillUpdate</code>）。同时这些生命周期函数也在React社区造成了很多困惑。基于以上原因，我们决定放弃这些方法，采用更好的方法替代。</p>
+<p>  我们承认这些改变会影响很多已经存在的组件。所以这条迁移之路会尽可能的平缓，同时我们也会提供逃生舱。（在Facebook, 我们也维护着超过 50,000 个 React 组件。我们也依赖渐进的发布周期）</p>
+<blockquote>
+<p><strong>注意</strong><br>反对警告会在将来的 16.x 版本中使用，<strong>但是遗承生命周期会一直到17版本。</strong><br>甚至在17版本中，仍然可以使用他们，但是他们会被加上 “UNSAFE_” 的前缀，表示他们可能会造成一些问题。我们准备了一个<a href="https://github.com/reactjs/react-codemod#rename-unsafe-lifecycles" target="_blank" rel="noopener">自动执行脚本</a>在已有代码中重命名他们。</p>
+</blockquote>
+<p>  作为对反对使用的不安全生命周期函数的补充，我们新加入了一些新的生命周期函数：</p>
+<ul>
+<li><a href="https://doc.react-china.org/docs/react-component.html#static-getderivedstatefromprops" target="_blank" rel="noopener"><code>getDerivedStateFromProps</code></a> 作为一种更安全的方式，替代之前的 <code>componentWillReceiveProps</code>。</li>
+<li><p><a href="https://doc.react-china.org/docs/react-component.html#getsnapshotbeforeupdate" target="_blank" rel="noopener"><code>getSnapshotBeforeUpdate</code></a> 用于安全的读取属性，比如在 DOM 更新前被使用。</p>
+<p><a href="https://doc.react-china.org/blog/2018/03/27/update-on-async-rendering.html" target="_blank" rel="noopener">点击此链接查看更多的关于生命周期的变化。</a></p>
+<h3 id="StrictMode-Component"><a href="#StrictMode-Component" class="headerlink" title="StrictMode Component"></a>StrictMode Component</h3><p><code>StrictMode</code> 是用于高亮在应用中的潜在问题的工具。就像 <code>Fragment</code>，<code>StrictMode</code> 不渲染任何可见的 UI。它会激活额外的检查和后代的警告。</p>
+<blockquote>
+<p><strong>注意</strong><br><code>StriceMode</code> 检查只会在开发模式下生效，而不会影响生产模式。</p>
+</blockquote>
+<p>尽管 StrictMode 不可能发现所有的问题（比如确定突变的类型），它也可以帮到你很多东西。如果你在 strict mode 下看到了警告，它们很可能在异步渲染的时候造成问题。</p>
+<p>在 16.3 版本中，<code>StrictMode</code> 可以帮助以下问题：</p>
+</li>
+<li><p>判断组件是否有不安全的生命周期函数</p>
+</li>
+<li><p>警告使用了之前的字符串 ref API 用法。</p>
+</li>
+<li><p>检测一些难以预料的影响</p>
+<p>别的的功能会在以后的 React 版本中加入。</p>
+<p><a href="https://doc.react-china.org/docs/strict-mode.html" target="_blank" rel="noopener">点击此链接查看更多的关于 StrictMode Component的文档。</a></p>
+</li>
+</ul>
+
       
     </div>
 
     
+      
 
-    
-    
-    
-
-    
 
     
 
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>赏</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/Wechat.jpeg" alt="Kosong 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/Alipay.jpeg" alt="Kosong 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Kosong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/" title="Reactv16.3.0:新的组件生命周期和contextAPI【译】">http://yoursite.com/2018/06/09/Reactv16-3-0-新的组件生命周期和contextAPI【译】/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
     
 
     <footer class="post-footer">
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/NexT主题配置方案/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avator.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Kosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/29/NexT主题配置方案/" itemprop="url">NexT主题配置方案</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T15:51:34+08:00">2018/03/29</time>
+              <a href="/2018/03/29/NexT主题配置方案/" rel="next" title="NexT主题配置方案">
+                <i class="fa fa-chevron-left"></i> NexT主题配置方案
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-              
-            
-
-            
-              
-              <span class="post-meta-divider">|</span>
-              
-
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于：</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-03-29T15:53:24+08:00">2018/03/29</time>
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/29/NexT主题配置方案/" class="leancloud_visitors" data-flag-title="NexT主题配置方案">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数：</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>身为一个程序猿，在一年以前就有意搭建一个自己的个人博客，但去年搭了一个框架后，却没有更新过任何文章内容，一方面是是自身的拖延症在做祟，另一方面公司任务实在太重，可以利用的业余时间实在有限。今年终于下定决心，一定要抽时间将自己工作中，业余时间研究的技术总结写出来，一面是自己技术成长和学习的记录，一面是和更多人的一起分享探讨。</p>
-<p>去年搭建的博客是借鉴 <strong><a href="https://thief.one/" target="_blank" rel="noopener">nmask</a></strong> 所写的如何利用 <a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">Hexo搭建博客教程</a>，作者写的非常全面详细，无论是刚接触博客搭建的新手，还是想优化个人博客的老玩家，都有一些可以借鉴的地方，具体内容可以去查看，在此就不做赘述。</p>
-<p>本文主要介绍 <code>NexT</code> 主题的配置说明，方便在选用 <code>NexT</code> 主题的玩家参考和借鉴。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/29/NexT主题配置方案/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -633,14 +587,57 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -661,8 +658,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -725,6 +731,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方的-Context-API"><span class="nav-number">1.</span> <span class="nav-text">官方的 Context API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createRef-App"><span class="nav-number">2.</span> <span class="nav-text">createRef App</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#forwardRef-API"><span class="nav-number">3.</span> <span class="nav-text">forwardRef API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件生命周期更改"><span class="nav-number">4.</span> <span class="nav-text">组件生命周期更改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StrictMode-Component"><span class="nav-number">5.</span> <span class="nav-text">StrictMode Component</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -864,6 +886,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
 
   
 
@@ -1363,7 +1389,7 @@
   <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
   <script type="text/javascript">
   
-    bookmark.loadBookmark();
+    bookmark.scrollToMark('auto', "#more");
   
   </script>
 
