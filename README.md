@@ -11,3 +11,6 @@ https://www.npmjs.com/package/marked-terminal
 - node + https 服务 https://letsencrypt.osfipin.com/
 
 - 添加博客彩蛋
+
+- 访问统计，评论
+
